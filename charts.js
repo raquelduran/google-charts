@@ -1,6 +1,7 @@
 //cargar la librería
-google.charts.load('current', {'packages':['corechart']});
-google.charts.load('upcoming', {'packages':['geochart']});
+/*google.charts.load('current', {'packages':['corechart']});
+google.charts.load('upcoming', {'packages':['geochart']});*/
+google.charts.load("visualization", "1", {packages:["corechart","geochart"]});
 
 //llama a la función cuando se haya cargado la página.
 google.charts.setOnLoadCallback(drawChartPie);
@@ -34,25 +35,50 @@ function drawChartPie() {
   var chart = new google.visualization.PieChart(document.getElementById('grafico1'));  
   chart.draw(data, options);
 }
-
-function drawChartBars(){
-    var data = new google.visualization.arrayToDataTable([
+/*-------------------------------------*/
+  var datos0 = [
         ['Partido','Escaños',{role:'style'}],
         ['PP', 137, 'dodgerblue'],
         ['PSOE', 85,'red'],
-        ['Unidos Podemos', 45,'purple'],
+        ['U.Podemos', 45,'purple'],
         ['ECP', 12,'mediumpurple'],
         ["C's", 32,'orange'],
         ['Otros', 39,'lightgrey']
-      ]);
+      ];
+  var datos1 = [
+        ['Partido','Votos en millones',{role:'style'}],
+        ['PP', 7.941236 , 'dodgerblue'],
+        ['PSOE', 5.443846,'red'],
+        ['U.Podemos', 3.227123 ,'purple'],
+        ['ECP', 0.853102 ,'mediumpurple'],
+        ["C's", 3.141570,'orange'],
+        ['Otros', 3.779358,'lightgrey']
+      ];
+  var turno = 0;
+
+function drawChartBars(){
+    turno = 1 - turno;
+    var data = [];
+    data[0] = google.visualization.arrayToDataTable(datos0);
+    data[1] = google.visualization.arrayToDataTable(datos1);
+
     var options = {
-      'title':"Representación en el congreso en formato barras",
-      'width': 500, 'height':250
+      'title':"Elecciones 2016",
+      'width': 500, 'height':250,
+      'animation' :{
+        'duration':1000,
+        'easing': 'out',
+        'startup': true
+      }
     }
 
     var chart = new google.visualization.BarChart(document.getElementById('grafico2'));
-    chart.draw(data,options);
+    
+    chart.draw(data[turno],options);
 }
+
+
+/*-------------------------------------*/
 function drawMap(){
     var data = google.visualization.arrayToDataTable([
           ['País', 'nº de visitantes (en millones)'],
